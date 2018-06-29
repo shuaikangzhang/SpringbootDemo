@@ -2,6 +2,7 @@ package priv.zsk.springbootdemo.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import priv.zsk.springbootdemo.entity.User;
 import priv.zsk.springbootdemo.mapper.UserMapper;
 import priv.zsk.springbootdemo.service.UserService;
 
@@ -19,5 +20,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List findUserList() {
         return userMapper.findUserList();
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
     }
 }

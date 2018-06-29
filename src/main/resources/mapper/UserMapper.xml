@@ -2,7 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="priv.zsk.springbootdemo.mapper.UserMapper">
-    <select id="findUserList" resultType="priv.zsk.springbootdemo.entity.User">
+    <resultMap id="userList" type="priv.zsk.springbootdemo.entity.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--查询用户信息 -->
+    <select id="findUserList" resultMap="userList">
         select * from user
     </select>
+    <!--修改用户信息 -->
+    <update id="updateUser" parameterType="priv.zsk.springbootdemo.entity.User">
+        update `springbootdemo`.`user`
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
