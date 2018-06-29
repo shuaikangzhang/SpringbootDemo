@@ -1,9 +1,6 @@
 package priv.zsk.springbootdemo.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,17 +35,30 @@ public class UserController {
     public String findUserList(){
         List<User> userList = userService.findUserList();
         return userList.toString();
+
     }
 
     @ApiOperation(value = "修改用户信息",notes = "更新用户信息",tags={"获取用户信息copy"})
-    @ApiParam(name = "id",value = "用户实体类",required = true)
-    //@ApiParam() 用于方法，参数，字段说明；表示对参数的添加元数据（说明或是否必填等）
-    //name–参数名
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="id",dataType="int", paramType = "query"),
+            @ApiImplicitParam(name="userName",value="用户名",dataType="User", paramType = "query",example="zsk",required = true),
+            @ApiImplicitParam(name="account",value="用户账号",dataType="User", paramType = "query",example="zsk") })
+    //@ApiImplicitParams({@ApiImplicitParam(name = "",value = "",dataType = "",paramType = "",example = "" )})
+    //用于方法，包含多个 @ApiImplicitParam
+    //name–参数ming
     //value–参数说明
+    //dataType–数据类型，经过测试如果是实体类作为参数，可以写该实体类，也可以写该数据的类型，如：id为该数据类型，用户名和用户账号为实体类
+    //paramType–参数类型
+    //example–举例说明
     //required–是否必填
     @RequestMapping("updateUser")
     @ResponseBody
-    public String updateUser(User user){
+    public String updateUser( @ApiParam(name = "test",value = "zsk",required = true) String test, User user){
+        //@ApiParam() 用于方法，参数，字段说明；表示对参数的添加元数据（说明或是否必填等）
+        //name–参数名
+        //value–参数说明
+        //required–是否必填
+        //如果参数是实体类，未找到方法实现该注解。可以使用@ApiImplicitParams注解
         try {
             userService.updateUser(user);
             return "success";
