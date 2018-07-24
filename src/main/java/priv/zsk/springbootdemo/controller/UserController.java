@@ -3,8 +3,7 @@ package priv.zsk.springbootdemo.controller;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import priv.zsk.springbootdemo.entity.User;
 import priv.zsk.springbootdemo.service.UserService;
 
@@ -30,7 +29,7 @@ public class UserController {
         //notes用于提示内容
         //tags可以重新分组（将相同的tags值分为一组）
 
-    @RequestMapping("findUserList")
+    @GetMapping("findUserList")
     @ResponseBody
     public String findUserList(){
         List<User> userList = userService.findUserList();
@@ -38,11 +37,46 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "修改用户姓名",notes = "更新用户信息",tags={"获取用户信息copy"})
+    @PostMapping("updateUserName")
+    @ResponseBody
+    public String updateUserName( @ApiParam(name = "userName",value = "zsk",required = true) String userName,int id){
+        //@ApiParam() 用于方法，参数，字段说明；表示对参数的添加元数据（说明或是否必填等）
+        //name–参数名
+        //value–参数说明
+        //required–是否必填
+        //如果参数是实体类，未找到方法实现该注解。可以使用@ApiImplicitParams注解
+        User user = new User();
+        user.setUserName(userName);
+        user.setId(id);
+        try {
+            userService.updateUser(user);
+            return "success";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "false";
+        }
+    }
+
+
+    @ApiOperation(value = "修改用户信息",notes = "更新用户信息",tags={"获取用户信息copy"})
+    @PostMapping("updateUser")
+    @ResponseBody
+    public String updateUser( @RequestBody User user) {
+        try {
+            userService.updateUser(user);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "false";
+        }
+    }
+
     @ApiOperation(value = "修改用户信息",notes = "更新用户信息",tags={"获取用户信息copy"})
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="id",dataType="int", paramType = "query"),
-            @ApiImplicitParam(name="userName",value="用户名",dataType="User", paramType = "query",example="zsk",required = true),
-            @ApiImplicitParam(name="account",value="用户账号",dataType="User", paramType = "query",example="zsk") })
+            @ApiImplicitParam(name="userName",value="用户名",dataType="String", paramType = "query",example="zsk",required = true),
+            @ApiImplicitParam(name="account",value="用户账号",dataType="String", paramType = "query",example="zsk") })
     //@ApiImplicitParams({@ApiImplicitParam(name = "",value = "",dataType = "",paramType = "",example = "" )})
     //用于方法，包含多个 @ApiImplicitParam
     //name–参数ming
@@ -51,18 +85,13 @@ public class UserController {
     //paramType–参数类型
     //example–举例说明
     //required–是否必填
-    @RequestMapping("updateUser")
+    @PostMapping("updateUser2")
     @ResponseBody
-    public String updateUser( @ApiParam(name = "test",value = "zsk",required = true) String test, User user){
-        //@ApiParam() 用于方法，参数，字段说明；表示对参数的添加元数据（说明或是否必填等）
-        //name–参数名
-        //value–参数说明
-        //required–是否必填
-        //如果参数是实体类，未找到方法实现该注解。可以使用@ApiImplicitParams注解
+    public String updateUser2( User user) {
         try {
             userService.updateUser(user);
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "false";
         }
