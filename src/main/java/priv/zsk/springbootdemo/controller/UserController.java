@@ -23,6 +23,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /*
+    * 使用thymeleaf时的部分总结：
+    *1.页面需要放在templates文件夹下（如果页面放在其他文件下还未成功过）
+    *2.经过测试，就算.yml关于thymeleaf的配置注释了，这个仍然可以运行
+    * */
+    @RequestMapping("findThymeleafView")
+    public String findThymeleafView(){
+        return "thymeleaf1/test2";
+    }
+
+    /*
+    * 使用freemarker
+    * 1.引入相关jar包
+    * 2.config里面有一个有关freemarker的的相关配置
+    * 3.以下的return都是能够正确找到页面的
+    * */
+    @RequestMapping("findFreemarkView")
+    public String findFreemarkView(){
+        //return "freemark1/viewsTest2";
+        return "ftl/viewsTest3";
+    }
+
     @ApiOperation(value="展示用户信息", notes = "查询用户信息",tags={"获取用户信息copy"})
         //@ApiOperation() 用于方法；表示一个http请求的操作
         //value用于方法描述

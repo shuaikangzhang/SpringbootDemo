@@ -105,7 +105,7 @@
             <version>${fastjson.version}</version>
         </dependency>
 
-        <!--配置视图解析器时使用 -->
+        <!--配置freemarker视图解析器时使用 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
