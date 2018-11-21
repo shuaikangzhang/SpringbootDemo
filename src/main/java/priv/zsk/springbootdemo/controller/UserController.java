@@ -54,7 +54,8 @@ public class UserController {
     @GetMapping("findUserList")
     @ResponseBody
     public String findUserList(){
-        List<User> userList = userService.findUserList();
+        User user = new User();
+        List<User> userList = userService.findUserList(user);
         return userList.toString();
 
     }

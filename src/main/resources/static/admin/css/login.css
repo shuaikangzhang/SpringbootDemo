@@ -1,0 +1,33 @@
+.AL-body{
+	margin: 0 auto;
+	margin-top: 200px;
+	width: 300px;
+	height: 300px;
+	
+}
+.AL-top{
+	height: 50px;
+	font-size: 30px;
+	margin-left: 40%;
+}
+.AL-adminId{
+	margin-left: 10px;
+}
+.AL-adminId-input{
+	margin-left:35px;
+}
+.AL-adminPw{
+	margin-top: 10px;
+	margin-left: 10px;
+}
+.AL-adminPw-input{
+	margin-top: 10px;
+	margin-left: 20px;
+}
+.AL-admin-submit{
+	width: 100px;
+	height: 40px;
+	margin-top: 20px;
+	margin-left: 100px;
+	background-color: #4A76D5;
+}

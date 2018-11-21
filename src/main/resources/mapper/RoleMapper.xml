@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zsk.springbootdemo.mapper.RoleMapper">
+    <!--获取所有的角色信息-->
+    <select id="findRoleList" parameterType="priv.zsk.springbootdemo.entity.Role" resultType="priv.zsk.springbootdemo.entity.Role">
+        SELECT * FROM admin_role WHERE deleted = 1
+
+    </select>
+
+    <!--通过角色id获取该角色信息 -->
+    <select id="findRoleById" resultType="priv.zsk.springbootdemo.entity.Role">
+        SELECT * FROM admin_role WHERE admin_role.id=#{value} AND deleted = 1
+    </select>
+
+    <!--更新角色信息-->
+    <update id="updateRole" parameterType="priv.zsk.springbootdemo.entity.Role">
+        UPDATE `pets`.`admin_role` SET 
+         `role_name`= #{roleName}, 
+         `role_code`=#{roleCode},
+          `avaliable`=#{avaliable}
+          WHERE  id = #{id}
+    </update>
+    <!--禁用该角色-->
+    <update id="disableRole" parameterType="priv.zsk.springbootdemo.entity.Role">
+           UPDATE `pets`.`admin_role` SET
+          `avaliable` = 0
+          WHERE  id = #{id}
+    </update>
+    <!--删除角色信息（逻辑删除）-->
+    <update id="deleteRole" parameterType="priv.zsk.springbootdemo.entity.Role">
+         UPDATE `pets`.`admin_role` SET 
+          deleted = 0
+          WHERE  id = #{id}
+    </update>
+
+
+    <!--插入新的角色-->
+    <insert id="addRole" parameterType="priv.zsk.springbootdemo.entity.Role">
+        INSERT INTO `pets`.`admin_role` ( `role_name`, `role_code`, `avaliable`, `create_time`, `deleted`)
+         VALUES ( #{roleName}, #{roleCode},#{avaliable},#{createTime},#{deleted})
+    </insert>
+</mapper>

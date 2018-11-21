@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zsk.springbootdemo.mapper.PermissionMapper">
+    <!--获取所有的资源和权限关系-->
+    <select id="findPermissionList" parameterType="priv.zsk.springbootdemo.entity.Permission" resultType="priv.zsk.springbootdemo.entity.Permission">
+        select ap.* FROM admin_permission ap WHERE deleted = 1
+        <if test="resourceName != '' and resourceName != null" >
+            and ap.resource_name LIKE '%${resuorceName}%'
+        </if>
+    </select>
+
+    <!--通过资源id获取详细信息-->
+    <select id="findPermissionById" resultType="priv.zsk.springbootdemo.entity.Permission">
+        SELECT * FROM admin_permission WHERE deleted = 1 AND id = #{value}
+    </select>
+    <!--更新权限操作包括更新，逻辑删除和禁用-->
+    <update id="updatePermission" parameterType="priv.zsk.springbootdemo.entity.Permission">
+        UPDATE `pets`.`admin_permission`
+         <set>
+             <if test="resourceName != null and resourceName != ''">
+                 `resource_name` = #{resourceName},
+             </if>
+             <if test="url != null and url != ''">
+                 `url`= #{url},
+             </if>
+             <if test="resourceType != null and resourceType != ''">
+                 `resource_type` = #{resourceType},
+             </if>
+             <if test="resourceCode != null and resourceCode != ''">
+                 `resource_code` = #{resourceCode},
+             </if>
+             <if test="parentid != null and parentid != ''">
+                 `parentid` = #{parentid},
+             </if>
+             <if test="parentids != null and parentids != ''">
+                 `parentids` = #{parentids},
+             </if>
+             <if test="sortstring != null and sortstring != ''">
+                 `sortstring` = #{sortstring},
+             </if>
+             <if test="avaliable != null and avaliable != ''">
+                 `avaliable` = #{avaliable},
+             </if>
+             <if test="deleted != null and deleted != ''">
+                 `deleted` = #{deleted},
+             </if>
+         </set>
+             WHERE  id = #{id}
+    </update>
+    <!--禁用权限-->
+    <update id="disablePermission" parameterType="priv.zsk.springbootdemo.entity.Permission">
+        UPDATE `pets`.`admin_permission` SET
+            `avaliable` = 0
+             WHERE  id = #{id}
+    </update>
+    <!--删除权限（逻辑删除）-->
+    <update id="deletePermission" parameterType="priv.zsk.springbootdemo.entity.Permission">
+        UPDATE `pets`.`admin_permission` SET
+            `deleted` = 0
+             WHERE  id = #{id}
+    </update>
+    <!--增加权限-->
+    <insert id="addPermission" parameterType="priv.zsk.springbootdemo.entity.Permission">
+        INSERT INTO `pets`.`admin_permission` (`permission_name`,`resource_name`, `resource_type`, `url`, `resource_code`, `parentid`, `parentids`, `sortstring`, `avaliable`, `deleted`)
+        VALUES ( #{permissionName},#{resourceName},#{resourceType},#{url},#{resourceCode},#{parentid},#{parentids},#{sortstring},#{avaliable},#{deleted});
+    </insert>
+
+</mapper>

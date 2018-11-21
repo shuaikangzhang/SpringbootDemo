@@ -34,6 +34,11 @@
         <fastjson.version>1.2.30</fastjson.version>
 
         <swagger.version>2.7.0</swagger.version>
+
+        <shiro-core.version>1.4.0</shiro-core.version>
+        <shiro-web.version>1.4.0</shiro-web.version>
+        <shiro-spring.version>1.4.0</shiro-spring.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
     </properties>
 
     <dependencies>
@@ -63,7 +68,7 @@
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
 
-         <!--配置mybatis -->
+        <!--配置mybatis -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -116,6 +121,36 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- shiro-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro-web.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro-spring.version}</version>
+        </dependency>
+
+        <!-- shiro依赖-->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
 
         <!-- Testing Dependencies -->
         <dependency>

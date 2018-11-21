@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zsk.springbootdemo.mapper.UserAndRoleMapper">
+
+    <resultMap id="UserAndRoleList" type="priv.zsk.springbootdemo.entity.User">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <collection property="roleList" ofType="priv.zsk.springbootdemo.entity.Role">
+            <result column="arid" property="id" jdbcType="INTEGER" />
+            <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="disRoleList" ofType="priv.zsk.springbootdemo.entity.Role">
+            <result column="dis_arid" property="id" jdbcType="INTEGER" />
+            <result column="dis_role_name" property="roleName" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <!--查询所有的用户和角色对应关系-->
+    <select id="findUserAndRoleList" parameterType="priv.zsk.springbootdemo.entity.User" resultMap="UserAndRoleList">
+        SELECT au.id,au.user_name,au.account,aur.role_id,ar.role_name,ar.id arid,ar1.role_name dis_role_name,ar1.id dis_arid
+        FROM `admin_user` au
+        LEFT JOIN admin_user_role aur ON aur.user_id = au.id and aur.avaliable = 1
+        LEFT JOIN admin_role ar ON ar.id = aur.role_id
+        LEFT JOIN admin_user_role aur1 ON aur1.user_id = au.id and aur1.avaliable = 0
+        LEFT JOIN admin_role ar1 ON ar1.id = aur1.role_id
+
+        <where>
+            <if test="id != null">
+                and au.id = #{id}
+            </if>
+            <if test="userName != '' and userName != null">
+                and au.user_name=#{userName}
+            </if>
+            <if test="deleted != null">
+                and au.deleted=#{deleted}
+            </if>
+        </where>
+    order by au.id desc
+    </select>
+
+    <!--通过userId查询所有的roleId-->
+    <!--<select id="findRoleIdByUserIdList" parameterType="priv.zsk.pets.admin.entity.UserAndRole" resultType="priv.zsk.pets.admin.entity.UserAndRole">-->
+        <!--select aur.* from admin_user_role aur-->
+        <!--<where>-->
+            <!--<if test="roleId != '' and roleId != null">-->
+                <!--and aur.role_id = #{roleId}-->
+            <!--</if>-->
+            <!--<if test="userId != '' and userId != null">-->
+                <!--and aur.user_id = #{userId}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <!--通过用户id查询角色id-->
+    <select id="findRoleIdByUserId" resultType="priv.zsk.springbootdemo.entity.UserAndRole">
+        SELECT * FROM admin_user_role WHERE admin_user_role.user_id = #{value} and admin_user_role.avaliable =1
+    </select>
+
+    <!--通过用户id或者角色id删除该用户和角色对应关系-->
+    <delete id="deleteUserAndRole" parameterType="priv.zsk.springbootdemo.entity.UserAndRole">
+        DELETE FROM admin_user_role
+         <where>
+             <if test="userId != null">
+                 and admin_user_role.user_id = #{userId}
+             </if>
+             <if test="roleId != null">
+                 and admin_user_role.role_id = #{roleId}
+             </if>
+         </where>
+    </delete>
+
+    <!--为用户分配角色-->
+    <insert id="addUserAndRole" parameterType="priv.zsk.springbootdemo.entity.RoleAndPermission">
+        INSERT INTO admin_user_role (user_id, role_id,avaliable) VALUES ( #{userId},#{roleId},#{avaliable})
+    </insert>
+
+    <!-- 角色修改有效或者无效时设置用户角色表中-->
+    <update id="updateUserAndRoleAvaliable" parameterType="priv.zsk.springbootdemo.entity.UserAndRole">
+        update  admin_user_role
+        <set>
+            <if test="avaliable != null">
+                admin_user_role.avaliable = #{avaliable}
+            </if>
+        </set>
+        <where>
+            <if test="userId != null">
+                and admin_user_role.user_id = #{userId}
+            </if>
+            <if test="roleId != null">
+                and admin_user_role.role_id = #{roleId}
+            </if>
+        </where>
+    </update>
+</mapper>

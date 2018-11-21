@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zsk.springbootdemo.mapper.RoleAndPermissionMapper">
+
+    <resultMap id="RoleAndPermissionList" type="priv.zsk.springbootdemo.entity.Role">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <collection property="permissionList" ofType="priv.zsk.springbootdemo.entity.Permission">
+            <result column="apid" property="id" jdbcType="INTEGER" />
+            <result column="permission_name" property="permissionName" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="disPermissionList" ofType="priv.zsk.springbootdemo.entity.Permission">
+            <result column="dis_apid" property="id" jdbcType="INTEGER" />
+            <result column="dis_permission_name" property="permissionName" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <!--查询所有的信息 -->
+    <select id="findRoleAndPermissionList" parameterType="priv.zsk.springbootdemo.entity.Role" resultMap="RoleAndPermissionList">
+        SELECT ar.id,ar.role_name,arp.permission_id,ap.permission_name,ap.id apid,ap1.permission_name dis_permission_name,ap1.id dis_apid
+        FROM admin_role ar
+        LEFT JOIN admin_role_permission arp ON arp.role_id = ar.id and arp.avaliable = 1
+        LEFT JOIN admin_permission ap ON ap.id = arp.permission_id
+        LEFT JOIN admin_role_permission arp1 ON arp1.role_id = ar.id and arp1.avaliable = 0
+        LEFT JOIN admin_permission ap1 ON ap1.id = arp1.permission_id
+        <where>
+            <if test="id!= null">
+                and ar.id = #{id}
+            </if>
+            <if test="deleted != null">
+                and ar.deleted =#{deleted}
+            </if>
+        </where>
+        order by ar.id DESC
+    </select>
+
+    <!--通过roleId查询所有的对应关系-->
+    <select id="findPermissionIdByRoleIdList" parameterType="priv.zsk.springbootdemo.entity.RoleAndPermission" resultType="priv.zsk.springbootdemo.entity.RoleAndPermission">
+        SELECT trp.* FROM admin_role_permission trp
+        <where>
+            <if test="roleId != '' and roleId != null">
+                and trp.role_id = #{roleId}
+            </if>
+            <if test="permission != '' and permissionId != null">
+                and trp.permission = #{permissionId}
+            </if>
+        </where>
+    </select>
+
+    <!--通过角色id获取权限id-->
+    <select id="findPermissionIdByRoleId" resultType="priv.zsk.springbootdemo.entity.RoleAndPermission">
+        SELECT trp.* FROM admin_role_permission trp WHERE trp.role_id=#{value} and trp.avaliable = 1
+    </select>
+
+    <!--为角色分配权限-->
+    <insert id="addRoleAndPermission">
+        INSERT INTO admin_role_permission (role_id,permission_id,avaliable)
+        VALUES (#{roleId},#{permissionId},#{avaliable});
+    </insert>
+
+    <!--通过角色id和权限id删除该角色id和权限id的对应关系-->
+    <delete id="deleteRoleAndPermission" parameterType="priv.zsk.springbootdemo.entity.RoleAndPermission">
+        delete  from admin_role_permission
+        <where>
+            <if test="roleId != null">
+                and admin_role_permission.role_id = #{roleId}
+            </if>
+            <if test="permissionId != null">
+                and admin_role_permission.permission_id = #{permissionId}
+            </if>
+        </where>
+    </delete>
+    <!-- 权限修改有效或者无效时设置角色权限表中信息-->
+    <update id="updateRoleAndPermissionAvaliable" parameterType="priv.zsk.springbootdemo.entity.RoleAndPermission">
+        update admin_role_permission
+        <set>
+            <if test="avaliable != null">
+                admin_role_permission.avaliable = #{avaliable}
+            </if>
+        </set>
+        <where>
+            <if test="roleId != null">
+                and admin_role_permission.role_id = #{roleId}
+            </if>
+            <if test="permissionId != null">
+                and admin_role_permission.permission_id = #{permissionId}
+            </if>
+        </where>
+    </update>
+</mapper>

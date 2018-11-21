@@ -1,19 +1,30 @@
 package priv.zsk.springbootdemo.mapper;
 
+
+
 import org.apache.ibatis.annotations.Mapper;
 import priv.zsk.springbootdemo.entity.User;
 
 import java.util.List;
 
-/**
- * @author:zsk
- * @CreateTime:2018/6/27 14:58
- */
 @Mapper
-public interface UserMapper<T> {
-    //查询用户列表信息
-    List<T> findUserList();
+public interface UserMapper {
+    /*获取所有用户信息*/
+    List findUserList(User user);
 
-    //修改用户信息
+    /*通过用户账号查询用户信息*/
+    User findUserByAccount(String account);
+
+    /*通过用户账号查询用户id*/
+    Integer findUserIdByAccount(String account);
+
+    /*添加用户*/
+    void addUser(User user);
+
+    /*更新用户*/
     void updateUser(User user);
+
+    /*删除用户（逻辑删除）*/
+    void deleteUser(User user);
+
 }

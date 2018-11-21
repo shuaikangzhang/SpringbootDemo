@@ -1,0 +1,40 @@
+a{
+    cursor:pointer;
+}
+.MV-message{
+    margin-top: 2%;
+    background: yellow;
+}
+.MV-content input{
+    margin-top: 2%;
+}
+.MV-top{
+    height: 100px;
+    border: solid 1px red;
+}
+.MV-top-exit{
+    float: right;
+    width: 5%;
+    height: 50px;
+}
+.MV-content-permission{
+    float:left;
+    width:30%;
+}
+.MV-content-permission div{
+    margin-top:1%;
+}
+
+.MV-content-role{
+    float: left;
+    margin-left: 3%;
+    width:30%;
+}
+.MV-content-all{
+    float:left;
+    margin-left: 3%;
+    width:30%;
+}
+.MV-content-all input{
+    display: block;
+}

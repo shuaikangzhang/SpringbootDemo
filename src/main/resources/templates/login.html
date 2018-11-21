@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <link rel="stylesheet" href="../static/admin/css/login.css" />
+    <script type="text/javascript" src="../static/admin/js/jquery-3.2.1.min.js" ></script>
+    <script type="text/javascript" src="../static//layer/layer.js"></script>
+</head>
+<body>
+<div class="AL-body">
+    <div class="AL-top">
+        <span>SpringBootDemo</span>
+    </div>
+    <label class="AL-adminId">用户名：</label>
+    <input type="text"  class="AL-adminId-input"/>
+    <lable class="AL-adminPw">用户密码：</lable>
+    <input type="password"  class="AL-adminPw-input"/>
+    <input type="submit" value="登录" class="AL-admin-submit">
+</div>
+
+<script th:inline="javascript">
+    var URL = function(url) {
+        return  "/" + location.pathname.split("/")[1]+url;
+    }
+    $(function(){
+
+        $(".AL-admin-submit").click(function login(){
+            var account=$(".AL-adminId-input").val();
+            var passWord=$(".AL-adminPw-input").val();
+            if(account !=null || passWord != null || account != "" || passWord != ""){
+                $.ajax( {
+                    type : "POST",
+                    url :URL("/login/login") ,
+                    data : {
+                        "account":account,
+                        "userPassword":passWord
+                    },
+                    success : function(data) {
+                        if(data=="success"){
+                            layer.alert('登录成功', {
+                                skin: 'layui-layer-molv' //样式类名 自定义样式
+                                ,closeBtn: 1  // 是否显示关闭按钮
+                                ,icon: 6  // icon
+                                ,yes:function(){
+                                    layer.alert("登录成功了");
+                                }});
+                        }
+                        if(data=="false"){
+                            layer.alert('账号不存在或者密码错误，请重新输入', {
+                                skin: 'layui-layer-molv' //样式类名 自定义样式
+                                ,closeBtn: 1  // 是否显示关闭按钮
+                                ,icon: 6  // icon
+                                ,yes:function(){
+                                    window.location.href= URL("/login/findLoginView");
+                                }});
+                        }
+                    },
+                    error :function(){
+                        layer.alert("网络连接出错！");
+                    }
+                });
+            }else{
+                layer.alert("输入为空,请重新输入");
+            }
+        })
+    })
+</script>
+    </body>
+</html>
