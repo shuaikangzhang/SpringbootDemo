@@ -34,6 +34,8 @@
         <fastjson.version>1.2.30</fastjson.version>
 
         <swagger.version>2.7.0</swagger.version>
+
+        <qcloud.cos.version>4.4</qcloud.cos.version>
     </properties>
 
     <dependencies>
@@ -47,14 +49,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--切面的相关的操作支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!--配置undertow服务器，同时要是启动该服务器需要在org.springframework.boot中配置exclusions标签中的相关内容 -->
@@ -115,6 +120,24 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>${qcloud.cos.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
         </dependency>
 
         <!-- Testing Dependencies -->

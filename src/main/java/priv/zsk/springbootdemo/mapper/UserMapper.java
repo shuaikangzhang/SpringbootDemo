@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper<T> {
     //查询用户列表信息
-    List<T> findUserList();
+    List<User> findUserList();
 
     //修改用户信息
     void updateUser(User user);

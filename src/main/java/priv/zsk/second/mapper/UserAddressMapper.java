@@ -1,6 +1,6 @@
 package priv.zsk.second.mapper;
 
-import org.mapstruct.Mapper;
+import org.apache.ibatis.annotations.Mapper;
 import priv.zsk.second.entity.UserAddressEntity;
 
 import java.util.List;
