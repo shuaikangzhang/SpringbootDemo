@@ -1,9 +1,12 @@
 package priv.zsk.second.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * @author:zsk
  * @CreateTime:2018-11-28 14:18
  */
+@TableName("user_address")
 public class UserAddressEntity {
     private int id;
     private Integer userId;
